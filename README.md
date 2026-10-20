@@ -1,4 +1,4 @@
-# Purva Drishti
+# Purva Drishti (Poorv-drishti)
 
 Purva Drishti is a Smart India Hackathon 2026 prototype for predictive logistics
 and forward supply chains (SIH26251). It demonstrates how stock history,
