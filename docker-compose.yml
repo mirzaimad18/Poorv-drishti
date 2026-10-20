@@ -1,0 +1,57 @@
+services:
+  database:
+    image: postgis/postgis:16-3.4
+    container_name: purva-drishti-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-purva_drishti}
+      POSTGRES_USER: ${POSTGRES_USER:-purva}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-purva_dev_password}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-purva} -d ${POSTGRES_DB:-purva_drishti}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  mosquitto:
+    image: eclipse-mosquitto:2
+    container_name: purva-drishti-mqtt
+    restart: unless-stopped
+    ports:
+      - "1883:1883"
+    volumes:
+      - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+      - mosquitto_data:/mosquitto/data
+      - mosquitto_log:/mosquitto/log
+
+  backend:
+    build:
+      context: ./backend
+    container_name: purva-drishti-api
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-purva}:${POSTGRES_PASSWORD:-purva_dev_password}@database:5432/${POSTGRES_DB:-purva_drishti}
+      MQTT_HOST: mosquitto
+      MQTT_PORT: ${MQTT_PORT:-1883}
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY:-local-only-change-this-secret}
+      ACCESS_TOKEN_MINUTES: ${ACCESS_TOKEN_MINUTES:-60}
+      LARGE_PLAN_QUANTITY: ${LARGE_PLAN_QUANTITY:-250}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:5173}
+      MODEL_DIR: /app/model_artifacts
+      OSMNX_ENABLED: ${OSMNX_ENABLED:-false}
+    ports:
+      - "8000:8000"
+    depends_on:
+      database:
+        condition: service_healthy
+      mosquitto:
+        condition: service_started
+
+volumes:
+  postgres_data:
+  mosquitto_data:
+  mosquitto_log:

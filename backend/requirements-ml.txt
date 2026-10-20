@@ -1,0 +1,8 @@
+# Optional forecast and live-map dependencies. Install after requirements.txt.
+-r requirements.txt
+numpy>=1.26,<3
+scikit-learn>=1.5,<2
+xgboost>=2.1,<4
+prophet>=1.1.6,<2
+osmnx>=2.0,<3
+geopandas>=1.0,<2

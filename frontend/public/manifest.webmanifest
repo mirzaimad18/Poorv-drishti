@@ -1,0 +1,17 @@
+{
+  "name": "Purva Drishti Field Intelligence",
+  "short_name": "Purva Drishti",
+  "description": "Field intelligence and response planning prototype.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f7f8f6",
+  "theme_color": "#285344",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

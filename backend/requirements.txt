@@ -1,0 +1,13 @@
+fastapi==0.115.12
+uvicorn[standard]==0.34.0
+SQLAlchemy==2.0.55
+psycopg[binary]==3.3.6
+GeoAlchemy2==0.17.1
+Shapely==2.1.2
+python-dotenv==1.0.1
+PyJWT[crypto]==2.10.1
+passlib[bcrypt]==1.7.4
+bcrypt>=4.0,<4.1
+python-multipart==0.0.20
+networkx==3.4.2
+paho-mqtt==2.1.0
